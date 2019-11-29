@@ -1,0 +1,87 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:instagram/screens/create_post_screen.dart';
+import 'package:instagram/screens/feed_screen.dart';
+import 'package:instagram/screens/profile_screen.dart';
+import 'package:instagram/screens/search_screen.dart';
+import 'package:instagram/services/auth_service.dart';
+
+import 'activity_screen.dart';
+
+class HomeScreen extends StatefulWidget {
+  static final String id = "HomeScreen";
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedTabIndex = 0;
+  PageController _pageController = new PageController();
+  changeTab(int index) {
+    setState(() {
+      _selectedTabIndex = index;
+    });
+
+    _pageController.animateToPage(
+      _selectedTabIndex,
+      duration: Duration(milliseconds: 10),
+      curve: Curves.easeIn,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "Instagram",
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: "Billabong",
+            fontSize: 35,
+          ),
+        ),
+      ),
+      body: PageView(
+        controller: _pageController,
+        children: <Widget>[
+          FeedScreen(),
+          SearchScreen(),
+          CreatePostScreen(),
+          ActivityScreen(),
+          ProfileScreen(),
+        ],
+        onPageChanged: (int index) {
+          setState(() {
+            _selectedTabIndex = index;
+          });
+        },
+      ),
+      bottomNavigationBar: CupertinoTabBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_a_photo),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+          ),
+        ],
+        currentIndex: _selectedTabIndex,
+        onTap: changeTab,
+        activeColor: Colors.black,
+      ),
+    );
+  }
+}
