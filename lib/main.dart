@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'Instagram',
       debugShowCheckedModeBanner: false,
       routes: {
-        HomeScreen.id:(context)=>HomeScreen(),
+        HomeScreen.id: (context) => HomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         SignUpScreen.id: (context) => SignUpScreen(),
       },
@@ -21,16 +21,17 @@ class MyApp extends StatelessWidget {
     );
   }
 
-
-  Widget _displayScreen(){
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.onAuthStateChanged ,
-      builder: (BuildContext context, AsyncSnapshot snapshot){
-       if(snapshot.hasData){
-         return HomeScreen();
-       }else{
-         return LoginScreen();
-       }
+  Widget _displayScreen() {
+    return StreamBuilder<FirebaseUser>(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return HomeScreen(
+            userId: snapshot.data.uid,
+          );
+        } else {
+          return LoginScreen();
+        }
       },
     );
   }
