@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/models/user_model.dart';
+import 'package:instagram/screens/edit_profile_screen.dart';
 import 'package:instagram/services/database_service.dart';
 import 'package:instagram/utitlities/constants.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -30,6 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _upperHalf(user),
             ],
           );
+          
         },
       ),
     );
@@ -103,7 +105,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Text(
                           "EditProfile",
                         ),
-                        onPressed: () => _showEditProfileDialog(context, user),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditProfileScreen(
+                              user: user,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -130,92 +139,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Divider(),
       ],
     );
-  }
-
-  _showEditProfileDialog(BuildContext context, User user) {
-    final _formKey = GlobalKey<FormState>();
-    String _name;
-    String _bio;
-    String _profileImageUrl = '';
-    return Alert(
-        context: context,
-        title: "Edit Profile",
-        style: AlertStyle(isCloseButton: false),
-        content: Column(
-          children: <Widget>[
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  TextFormField(
-                    initialValue: user.name,
-                    decoration: InputDecoration(
-                      labelText: "Name",
-                    ),
-                    validator: (input) =>
-                        input.trim().length < 1 ? "Please enter a name" : null,
-                    onSaved: (input) => _name = input,
-                  ),
-                  TextFormField(
-                    initialValue: user.bio,
-                    decoration: InputDecoration(
-                      labelText: "Bio",
-                    ),
-                    validator: (input) => input.trim().length > 150
-                        ? "Bio's can't be greater than 150 characters"
-                        : null,
-                    onSaved: (input) => _bio = input,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  GestureDetector(
-                    onTap: (){},
-                    child: Text(
-                      "Change Profile Picture",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        buttons: [
-          DialogButton(
-            radius: BorderRadius.circular(25),
-            height: 35,
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                User user = User(
-                    name: _name,
-                    bio: _bio,
-                    profileImageUrl: _profileImageUrl,
-                    id: widget.userId);
-                DatabaseService.updateUser(user);
-                Navigator.pop(context);
-              }
-            },
-            child: Text(
-              "Save",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ),
-          DialogButton(
-            radius: BorderRadius.circular(25),
-            height: 35,
-            color: Colors.red,
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              "Cancel",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          )
-        ]).show();
   }
 }
