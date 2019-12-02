@@ -17,7 +17,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _formKey.currentState.save();
       try{
     AuthService.signUpUser(_name, _email, _password);
-    Navigator.pushReplacementNamed(context, HomeScreen.id);
+    Navigator.pop(context);
       }catch(e){
         print(e);
       }
