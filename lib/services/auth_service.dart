@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:instagram/models/user_data.dart';
+import 'package:provider/provider.dart';
 
 class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -15,7 +18,7 @@ class AuthService {
     }
   }
 
-  static void signUpUser(String name, String email, String password) async {
+  static void signUpUser(BuildContext context,String name, String email, String password) async {
     try {
       AuthResult authResult = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -28,10 +31,12 @@ class AuthService {
           "email": email,
           "profileImageUrl": "",
         });
+        Provider.of<UserData>(context).currentUserId = user.uid;
       }
     } catch (e) {
       print(e);
     }
+    
   }
 
   static void logout() {

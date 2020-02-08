@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/models/user_model.dart';
 import 'package:instagram/screens/edit_profile_screen.dart';
@@ -17,6 +18,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "Instagram",
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: "Billabong",
+            fontSize: 35,
+          ),
+        ),
+      ),
       body: FutureBuilder(
         future: usersRef.document(widget.userId).get(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -31,7 +45,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _upperHalf(user),
             ],
           );
-          
         },
       ),
     );
@@ -47,7 +60,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: <Widget>[
               CircleAvatar(
                 radius: 40,
-                backgroundImage: AssetImage("assets/images/game.png"),
+                backgroundImage: user.profileImageUrl.isEmpty
+                    ? AssetImage("assets/images/person_placeholder.png")
+                    : CachedNetworkImageProvider(user.profileImageUrl),
               ),
               Expanded(
                 child: Column(
