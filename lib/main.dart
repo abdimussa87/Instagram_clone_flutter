@@ -3,25 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/screens/signup_screen.dart';
+import 'package:provider/provider.dart';
+
+import 'models/user_data.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Instagram',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryIconTheme:
-            Theme.of(context).primaryIconTheme.copyWith(color: Colors.black),
+    return ChangeNotifierProvider(
+        create: (context)=>UserData(),
+        child: MaterialApp(
+        title: 'Instagram',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryIconTheme:
+              Theme.of(context).primaryIconTheme.copyWith(color: Colors.black),
+        ),
+        routes: {
+          HomeScreen.id: (context) => HomeScreen(),
+          LoginScreen.id: (context) => LoginScreen(),
+          SignUpScreen.id: (context) => SignUpScreen(),
+        },
+        home: _displayScreen(),
       ),
-      routes: {
-        HomeScreen.id: (context) => HomeScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        SignUpScreen.id: (context) => SignUpScreen(),
-      },
-      home: _displayScreen(),
     );
   }
 
@@ -30,8 +36,9 @@ class MyApp extends StatelessWidget {
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
+          Provider.of<UserData>(context).currentUserId = snapshot.data.uid;
           return HomeScreen(
-            userId: snapshot.data.uid,
+           
           );
         } else {
           return LoginScreen();

@@ -10,6 +10,19 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "Instagram",
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: "Billabong",
+            fontSize: 35,
+          ),
+        ),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[

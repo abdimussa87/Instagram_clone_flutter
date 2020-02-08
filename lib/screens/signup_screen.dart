@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagram/screens/home_screen.dart';
+
 import 'package:instagram/services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       try{
-    AuthService.signUpUser(_name, _email, _password);
+    AuthService.signUpUser(context,_name, _email, _password);
     Navigator.pop(context);
       }catch(e){
         print(e);
