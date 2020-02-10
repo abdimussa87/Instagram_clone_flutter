@@ -44,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
           CreatePostScreen(),
           ActivityScreen(),
           ProfileScreen(
+            //both currentUserId and userId are the same when going from
+            //this screen but differs when going from search screen
+            currentUserId: Provider.of<UserData>(context).currentUserId,
             userId: Provider.of<UserData>(context).currentUserId,
           ),
         ],
