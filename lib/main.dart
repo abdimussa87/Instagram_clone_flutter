@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/screens/following_screen.dart';
 import 'package:instagram/screens/home_screen.dart';
 import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/screens/signup_screen.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
           HomeScreen.id: (context) => HomeScreen(),
           LoginScreen.id: (context) => LoginScreen(),
           SignUpScreen.id: (context) => SignUpScreen(),
+          FollowingScreen.id:(context)=> FollowingScreen(),
         },
         home: _displayScreen(),
       ),
