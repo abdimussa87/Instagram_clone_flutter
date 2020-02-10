@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:instagram/services/auth_service.dart';
@@ -11,15 +12,19 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   String _email, _password, _name;
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   _signUp() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      try{
-    AuthService.signUpUser(context,_name, _email, _password);
-    Navigator.pop(context);
-      }catch(e){
-        print(e);
+      try {
+        AuthService.signUpUser(_scaffoldKey,context, _name, _email, _password);
+        
+      } catch (e) {
+        final snackbar = SnackBar(
+          content: Text("Invalid credentials"),
+        );
+        _scaffoldKey.currentState.showSnackBar(snackbar);
       }
     }
   }
@@ -31,6 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: ListView(
         children: <Widget>[
           Container(
@@ -67,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           validator: (input) => !input.contains("@")
                               ? "Please enter a valid email"
                               : null,
-                          onSaved: (value) => _email = value,
+                          onSaved: (value) => _email = value.trim(),
                           decoration: InputDecoration(
                             labelText: "Email",
                           ),
@@ -77,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 30, vertical: 10),
                         child: TextFormField(
-                          validator: (input) => input.length < 6
+                          validator: (input) => input.trim().length < 6
                               ? "Password must be at least 6 characters"
                               : null,
                           onSaved: (value) => _password = value,

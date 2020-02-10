@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final Firestore _firestore = Firestore.instance;
-  static void signInuser(String email, String password) async {
+  static void signInuser(GlobalKey<ScaffoldState> scaffoldKey,
+      BuildContext context, String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(
         email: email,
@@ -15,10 +16,15 @@ class AuthService {
       );
     } catch (e) {
       print(e);
+      final snackbar = SnackBar(
+        content: Text("Invalid credentials"),
+      );
+      scaffoldKey.currentState.showSnackBar(snackbar);
     }
   }
 
-  static void signUpUser(BuildContext context,String name, String email, String password) async {
+  static void signUpUser(GlobalKey<ScaffoldState> scaffoldKey,
+      BuildContext context, String name, String email, String password) async {
     try {
       AuthResult authResult = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -32,11 +38,14 @@ class AuthService {
           "profileImageUrl": "",
         });
         Provider.of<UserData>(context).currentUserId = user.uid;
+        Navigator.pop(context);
       }
     } catch (e) {
-      print(e);
+      final snackbar = SnackBar(
+        content: Text("Invalid credentials"),
+      );
+      scaffoldKey.currentState.showSnackBar(snackbar);
     }
-    
   }
 
   static void logout() {
