@@ -24,9 +24,11 @@ class _FollowersScreenState extends State<FollowersScreen> {
   }
 
   _setupUserFollowers() {
+    if(mounted){
     setState(() {
       userFollowers = DatabaseService.userFollowers(widget.userId);
     });
+    }
   }
 
   @override
@@ -37,15 +39,19 @@ class _FollowersScreenState extends State<FollowersScreen> {
         elevation: 0,
         title: Text(
           "Followers",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
       ),
       body: FutureBuilder(
         future: userFollowers,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Colors.black),
+              strokeWidth: 1,
+            ));
           }
           if (snapshot.data.documents.length == 0) {
             return Center(

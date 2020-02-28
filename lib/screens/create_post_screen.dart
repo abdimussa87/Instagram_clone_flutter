@@ -24,12 +24,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         centerTitle: true,
         title: Text(
           "Create Post",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
         actions: <Widget>[
@@ -162,7 +162,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         caption: _captionController.text,
         timestamp: Timestamp.now(),
         authorId: Provider.of<UserData>(context).currentUserId,
-        likes: {},
+        likeCount: 0,
       );
 
       DatabaseService.createPost(post);
