@@ -39,10 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         controller: _pageController,
         children: <Widget>[
-          FeedScreen(),
+          FeedScreen(
+            currentUserId: Provider.of<UserData>(context).currentUserId,
+          ),
           SearchScreen(),
           CreatePostScreen(),
-          ActivityScreen(),
+          ActivityScreen(
+            currentUserId: Provider.of<UserData>(context).currentUserId,
+          ),
           ProfileScreen(
             //both currentUserId and userId are the same when going from
             //this screen but differs when going from search screen

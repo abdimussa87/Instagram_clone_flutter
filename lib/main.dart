@@ -14,19 +14,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context)=>UserData(),
-        child: MaterialApp(
+      create: (context) => UserData(),
+      child: MaterialApp(
         title: 'Instagram',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryIconTheme:
-              Theme.of(context).primaryIconTheme.copyWith(color: Colors.black),
-        ),
+        theme: ThemeData.dark(),
         routes: {
           HomeScreen.id: (context) => HomeScreen(),
           LoginScreen.id: (context) => LoginScreen(),
           SignUpScreen.id: (context) => SignUpScreen(),
-          FollowingScreen.id:(context)=> FollowingScreen(),
+          FollowingScreen.id: (context) => FollowingScreen(),
         },
         home: _displayScreen(),
       ),
@@ -39,9 +36,7 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           Provider.of<UserData>(context).currentUserId = snapshot.data.uid;
-          return HomeScreen(
-           
-          );
+          return HomeScreen();
         } else {
           return LoginScreen();
         }

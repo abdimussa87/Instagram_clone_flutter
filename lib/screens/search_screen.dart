@@ -21,7 +21,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         title: TextField(
           controller: _searchController,
           decoration: InputDecoration(
@@ -41,8 +41,8 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           onSubmitted: (input) {
             setState(() {
-              if(input.isNotEmpty){
-              _users = DatabaseService.searchUsers(input);
+              if (input.isNotEmpty) {
+                _users = DatabaseService.searchUsers(input);
               }
             });
           },
@@ -58,7 +58,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 future: _users,
                 builder: (BuildContext context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
+                    return Center(
+                        child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.black),
+                      strokeWidth: 1,
+                    ));
                   }
                   if (snapshot.data.documents.length == 0) {
                     return Center(child: Text("No users found "));
@@ -94,7 +98,8 @@ class _SearchScreenState extends State<SearchScreen> {
             context,
             MaterialPageRoute(
                 builder: (_) => ProfileScreen(
-                      currentUserId: Provider.of<UserData>(context).currentUserId,
+                      currentUserId:
+                          Provider.of<UserData>(context).currentUserId,
                       userId: user.id,
                     )));
       },
